@@ -1,16 +1,17 @@
 package hello;
 
 import hello.domain.Kiosk;
-import hello.domain.MenuItem;
+import hello.domain.Menu;
 
 import java.util.List;
 
-import static hello.init.Init.initMenuItems;
+import static hello.init.Init.initMenus;
 
 public class Main {
     public static void main(String[] args) {
-        List<MenuItem> menuItems = initMenuItems();
-        Kiosk kiosk = new Kiosk(menuItems);
+        List<Menu> menus = initMenus();
+
+        Kiosk kiosk = new Kiosk(menus);
         kiosk.start();
     }
 }

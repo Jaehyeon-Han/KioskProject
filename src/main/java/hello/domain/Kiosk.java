@@ -1,42 +1,69 @@
 package hello.domain;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Kiosk {
-    private final List<MenuItem> menuItems;
+    private final List<Menu> menus;
 
-    public Kiosk(List<MenuItem> menuItems) {
-        this.menuItems = menuItems;
+    public Kiosk(List<Menu> menus) {
+        this.menus = menus;
     }
 
     public void start() {
         Scanner sc = new Scanner(System.in);
-        char input;
 
+        char category;
         do {
-            printMenu();
-            input = sc.nextLine().charAt(0);
-            processInput(input);
-        } while (input != '0');
+            printMainMenu();
+
+            category = sc.nextLine().charAt(0);
+            if(category == '0') break;
+            Optional<Integer> optionalCategoryIndex = getValidIndex(category, menus.size());
+            if(optionalCategoryIndex.isEmpty()) {
+                System.out.println("잘못된 카테고리");
+                continue;
+            }
+
+            Menu selectedMenu = menus.get(optionalCategoryIndex.get() - 1);
+            char item;
+            Optional<Integer> optionalItemIndex;
+            do {
+                selectedMenu.printMenu();
+                System.out.println("0. 뒤로가기");
+
+                item = sc.nextLine().charAt(0);
+                if(item == '0') break;
+                optionalItemIndex = getValidIndex(item, selectedMenu.getMenuItemSize());
+                if(optionalItemIndex.isEmpty()) {
+                    System.out.println("잘못된 메뉴");
+                    continue;
+                }
+                System.out.println("선택한 메뉴: " + selectedMenu.getMenuItem(optionalItemIndex.get() - 1));
+            } while (optionalItemIndex.isEmpty());
+        } while (true);
     }
 
-    private void processInput(char input) {
-        switch(input) {
-            case '0' -> System.out.println("Terminating...");
-            case '1' -> System.out.println("Shaking");
-            case '2' -> System.out.println("Smoking");
-            case '3' -> System.out.println("Cheesy");
-            case '4' -> System.out.println("Classic");
-            default -> System.out.println("No food for you!");
+    // 0-max -> Optional(value), else -> Optional.empty()
+    private Optional<Integer> getValidIndex(char input, int max) {
+        try {
+            int index = Integer.parseInt(String.valueOf(input));
+            if (index > max || index < 0) {
+                return Optional.empty();
+            }
+
+            return Optional.of(index);
+        } catch (NumberFormatException e) {
+            return Optional.empty();
         }
     }
 
-    private void printMenu() {
-        System.out.println("[ SHAKESHACK MENU ]");
-        for (int i = 0; i < menuItems.size(); ++i) {
-            System.out.println((i+1) + ". " + menuItems.get(i).toString());
+    private void printMainMenu() {
+        System.out.println("[ MAIN MENU ]");
+        for (int i = 0; i < menus.size(); ++i) {
+            System.out.println((i+1) + ". " + menus.get(i).getName());
         }
-        System.out.println("0. 종료      | 종료");
+        System.out.println("0. 종료");
     }
 }
