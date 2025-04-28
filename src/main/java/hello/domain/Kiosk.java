@@ -20,29 +20,34 @@ public class Kiosk {
 
             category = sc.nextLine().charAt(0);
             if(category == '0') break;
-            Optional<Integer> optionalCategoryIndex = getValidIndex(category, menus.size());
-            if(optionalCategoryIndex.isEmpty()) {
+            Optional<Integer> optionalCategoryNumber = getValidIndex(category, menus.size());
+            if(optionalCategoryNumber.isEmpty()) {
                 System.out.println("잘못된 카테고리");
                 continue;
             }
 
-            Menu selectedMenu = menus.get(optionalCategoryIndex.get() - 1);
-            char item;
-            Optional<Integer> optionalItemIndex;
-            do {
-                selectedMenu.printMenu();
-                System.out.println("0. 뒤로가기");
-
-                item = sc.nextLine().charAt(0);
-                if(item == '0') break;
-                optionalItemIndex = getValidIndex(item, selectedMenu.getMenuItemSize());
-                if(optionalItemIndex.isEmpty()) {
-                    System.out.println("잘못된 메뉴");
-                    continue;
-                }
-                System.out.println("선택한 메뉴: " + selectedMenu.getMenuItem(optionalItemIndex.get() - 1));
-            } while (optionalItemIndex.isEmpty());
+            selectItemFromMenu(optionalCategoryNumber.get() - 1, sc);
         } while (true);
+    }
+
+    private void selectItemFromMenu(int categoryIndex, Scanner sc) {
+        Menu selectedMenu = menus.get(categoryIndex);
+
+        char item;
+        Optional<Integer> optionalItemNumber;
+        do {
+            selectedMenu.printMenu();
+            System.out.println("0. 뒤로가기");
+
+            item = sc.nextLine().charAt(0);
+            if(item == '0') break;
+            optionalItemNumber = getValidIndex(item, selectedMenu.getMenuItemSize());
+            if(optionalItemNumber.isEmpty()) {
+                System.out.println("잘못된 메뉴");
+                continue;
+            }
+            System.out.println("선택한 메뉴: " + selectedMenu.getMenuItem(optionalItemNumber.get() - 1));
+        } while (optionalItemNumber.isEmpty());
     }
 
     // 0-max -> Optional(value), else -> Optional.empty()
