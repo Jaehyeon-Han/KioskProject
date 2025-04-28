@@ -34,11 +34,15 @@ public class HomeState implements KioskState {
                 continue;
             }
 
-            StateFactory stateFactory = new StateFactory(context);
-            KioskState chooseMenuItemState = stateFactory.createChooseMenuItemState(optionalCategoryIndex.get() - 1);
-            context.setState(chooseMenuItemState);
+            setChooseMenuItemState(context, optionalCategoryIndex.get() - 1);
             return;
         } while (true);
+    }
+
+    private static void setChooseMenuItemState(Kiosk context, int categoryIndex) {
+        StateFactory stateFactory = new StateFactory(context);
+        KioskState chooseMenuItemState = stateFactory.createChooseMenuItemState(categoryIndex);
+        context.setState(chooseMenuItemState);
     }
 
     private void printMainMenu() {
