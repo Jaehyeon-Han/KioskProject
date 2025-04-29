@@ -1,7 +1,7 @@
 package hello.init;
 
-import hello.domain.Menu;
-import hello.domain.MenuItem;
+import hello.model.Category;
+import hello.model.Item;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -10,16 +10,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Init {
-    public static List<Menu> initMenus() {
+    public static List<Category> initCategories() {
         try (BufferedReader br = new BufferedReader(new FileReader(new File("./src/main/resources/menu.data")))) {
-            List<Menu> menus = new ArrayList<>();
+            List<Category> categories = new ArrayList<>();
 
-            String category = null;
+            String currentCategory = null;
             String line;
             while ((line = br.readLine()) != null) {
-                category = line;
+                currentCategory = line;
 
-                List<MenuItem> menuItems = new ArrayList<>();
+                List<Item> items = new ArrayList<>();
                 while ((line = br.readLine()) != null && !line.isEmpty()) {
                     String pattern = "\"([^\"]+)\",([0-9.]+),\"([^\"]+)\"";
                     Pattern r = Pattern.compile(pattern);
@@ -30,16 +30,16 @@ public class Init {
                         double price = Double.parseDouble(m.group(2));
                         String description = m.group(3);
 
-                        MenuItem menuItem = new MenuItem(name, price, description);
-                        menuItems.add(menuItem);
+                        Item item = new Item(name, price, description);
+                        items.add(item);
                     }
                 }
 
-                Menu menu = new Menu(menuItems, category);
-                menus.add(menu);
+                Category category = new Category(items, currentCategory);
+                categories.add(category);
             }
 
-            return menus;
+            return categories;
         } catch (IOException e) {
             System.out.println(e.getMessage());
             throw new RuntimeException("Failed to initialize menu");

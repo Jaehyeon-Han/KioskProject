@@ -1,6 +1,6 @@
 package hello.init;
 
-import hello.domain.Menu;
+import hello.model.Category;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
@@ -13,12 +13,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class InitTest {
 
     @Test
-    void initMenus() {
-        List<Menu> menus = Init.initMenus();
-        for (Menu menu : menus) {
-            menu.printMenu();
+    void initCategories() {
+        List<Category> categories = Init.initCategories();
+        for (Category category : categories) {
+            category.printItemsInCategory();
         }
-        assertFalse(menus.isEmpty());
+        assertFalse(categories.isEmpty());
     }
 
     @Test

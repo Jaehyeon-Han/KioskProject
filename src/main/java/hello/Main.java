@@ -1,17 +1,25 @@
 package hello;
 
-import hello.domain.Kiosk;
-import hello.domain.Menu;
+import hello.model.Category;
+import hello.state.DefaultState;
+import hello.store.ItemStore;
+import hello.util.InputHandler;
 
 import java.util.List;
 
-import static hello.init.Init.initMenus;
+import static hello.init.Init.initCategories;
 
 public class Main {
     public static void main(String[] args) {
-        List<Menu> menus = initMenus();
+        List<Category> categories = initCategories();
+        ItemStore itemStore = new ItemStore(categories);
 
-        Kiosk kiosk = new Kiosk(menus);
+        InputHandler inputHandler = new InputHandler(System.in);
+
+        DefaultState defaultState = new DefaultState(itemStore, inputHandler);
+
+        Kiosk kiosk = new Kiosk(defaultState);
+
         kiosk.start();
     }
 }
