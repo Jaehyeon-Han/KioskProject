@@ -12,7 +12,7 @@ public class ItemStore {
     }
 
     public List<Category> getCategories() {
-        return categories;
+        return categories.stream().toList();
     }
 
     public Category getCategory (int index) {
