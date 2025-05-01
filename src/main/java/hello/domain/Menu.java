@@ -12,6 +12,7 @@ public class Menu {
         this.menuItems = menuItems;
         this.name = name;
     }
+
     public String getName() {
         return name;
     }
@@ -19,7 +20,7 @@ public class Menu {
     public void printMenu() {
         System.out.printf("[ %s MENU ]\n", name);
         for (int i = 0; i < menuItems.size(); ++i) {
-            System.out.println((i+1) + ". " + menuItems.get(i).toString());
+            System.out.println((i + 1) + ". " + menuItems.get(i).toString());
         }
     }
 
