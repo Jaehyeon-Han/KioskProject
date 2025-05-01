@@ -19,7 +19,9 @@ public class Kiosk {
             printMainMenu();
 
             category = sc.nextLine().charAt(0);
-            if(category == '0') break;
+            if(category == '0') break; // 키오스크 종료
+
+            // 제대로 된 입력을 받을 때까지 반복
             Optional<Integer> optionalCategoryNumber = getValidIndex(category, menus.size());
             if(optionalCategoryNumber.isEmpty()) {
                 System.out.println("잘못된 카테고리");
@@ -40,12 +42,15 @@ public class Kiosk {
             System.out.println("0. 뒤로가기");
 
             item = sc.nextLine().charAt(0);
-            if(item == '0') break;
+            if(item == '0') break; // 메인 메뉴로
+
+            // 제대로 된 입력을 받을 때까지 반복
             optionalItemNumber = getValidIndex(item, selectedMenu.getMenuItemSize());
             if(optionalItemNumber.isEmpty()) {
                 System.out.println("잘못된 메뉴");
                 continue;
             }
+            
             System.out.println("선택한 메뉴: " + selectedMenu.getMenuItem(optionalItemNumber.get() - 1));
         } while (optionalItemNumber.isEmpty());
     }
@@ -57,7 +62,6 @@ public class Kiosk {
             if (index > max || index < 0) {
                 return Optional.empty();
             }
-
             return Optional.of(index);
         } catch (NumberFormatException e) {
             return Optional.empty();
